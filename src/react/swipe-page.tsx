@@ -1,16 +1,33 @@
 import styled, {keyframes} from 'styled-components';
 import * as ReactRedux from 'react-redux';
 import * as React from 'react';
-import {State} from '../redux';
+import {State, getResult, setInitialState} from '../redux';
 import './load-pulse.css';
 import c from './common';
 import {FaHeart, FaRotateLeft, FaTimesCircle, FaStar } from 'react-icons/lib/fa';
 
-
-
-const fadeIn = keyframes`
+const slideIn = keyframes`
   from { opacity: 0; transform: rotate(-5deg) translate(-200px);}
   to { opacity: 1; transform: rotate(0deg) translate(0px); }
+`;
+
+const slideOut = keyframes`
+  from { transform: rotate(0deg) translate(0);}
+  to { transform: rotate(5deg) translate(300px); }
+`;
+
+/*const fadeIn = keyframes`
+  from { opacity: 0;}
+  to { opacity: 1; }
+`*/
+
+const SwipePageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1;
+  position: relative;
+  ${(p: {resultShown: boolean}) => p.resultShown ? 'filter: blur(7px);' : ''}
 `
 
 const CenteringWrapper = styled.div`
@@ -23,10 +40,15 @@ const CenteringWrapper = styled.div`
 
 interface SwipePageProps {
   loading: boolean;
+  loadingResult: boolean;
+  getResult: () => void;
+  isMatch: boolean;
+  showResult: boolean;
+  setInitialState: () => void;
 }
 
 const AppearingCard = c.Card.extend`
-  animation: ${fadeIn} 0.7s;
+  animation: ${(p: {present: boolean}) => p.present ? slideIn : slideOut} 0.7s forwards;
   min-height: 340px;
   min-width: 250px;
   background-image: url(./blurred-image.jpg);
@@ -40,7 +62,7 @@ const AppearingCard = c.Card.extend`
   padding: 0px;
   margin-bottom: 0px;
   overflow: hidden;
-`
+`;
 
 const BottomInfo = styled.div`
   height: 180px;
@@ -62,7 +84,7 @@ const BallContainer = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   padding-bottom: 14px;
-`
+`;
 
 const AppearingBall = styled.div`
   min-width: ${(p: {size: number}) => p.size}px;
@@ -73,17 +95,75 @@ const AppearingBall = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  &:hover {
+    background-color: #eee;
+  }
+  &:active {
+    background-color: #ddd;
+  }
+`;
+
+/*const Fade = styled.span`
+  animation: ${fadeIn} 0.5s;
+`*/
+
+const ResultPopup = styled.div`
+  background-color: rgba(0,0,10,0.6);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ItsAMatchText = styled.span`
+  font-family: 'Sedgwick Ave', cursive;
+  color: white;
+  font-size: 36px;
+  margin-bottom: 10px;
+`
+const InfoText = styled.span`
+  font-family: 'Helvetica';
+  font-weight: 100;
+  color: white;
+  font-size: 13px;
+`;
+
+const Button = styled.div`
+  min-width: 240px;
+  min-height: 35px;
+  border: 1px solid white;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0,0,0,0.3);
+  }
 `;
 
 export const SwipePage = (props: SwipePageProps) =>
 <React.Fragment>
+<SwipePageWrapper
+  resultShown={props.showResult}
+>
   <c.TopBar> 
     <c.Font size={15} color={c.darkFont}> Swipe away </c.Font> 
   </c.TopBar>
   {props.loading && <CenteringWrapper> <div className="load"/> </CenteringWrapper>}
   {!props.loading && 
-    <CenteringWrapper>
-      <AppearingCard>
+    <CenteringWrapper
+      onMouseDown={() => props.getResult()}
+    >
+      <AppearingCard
+        present={!props.loadingResult}
+      >
         <img src='./sasken-logo-white.png' style={{width: '142px', height: '58px', alignSelf: 'center'}} />
         <BottomInfo> 
           <c.Font color='white' size={15}> Sasken, 28 </c.Font>
@@ -97,16 +177,50 @@ export const SwipePage = (props: SwipePageProps) =>
       <AppearingBall size={40}> <FaTimesCircle size={20} color='rgb(253,62,111)' /> </AppearingBall> 
       <AppearingBall size={30}> <FaRotateLeft color='rgb(255,187,4)' /> </AppearingBall> 
       <AppearingBall size={30}> <FaStar color='rgb(39,181,55)' /> </AppearingBall> 
-      <AppearingBall size={40}> <FaHeart size={20} color='rgb(66,234,96)' /> </AppearingBall> 
+      <AppearingBall size={40} onClick={() => props.getResult()}> <FaHeart size={20} color='rgb(66,234,96)' /> </AppearingBall> 
     </BallContainer>
+</SwipePageWrapper>
+  {props.showResult &&
+    <ResultPopup>
+      <ItsAMatchText> It's a match! </ItsAMatchText>
+      <InfoText> You and Sasken have liked each other. </InfoText>
+      <InfoText> Ask the people for a job interview! </InfoText>
+
+      <Button
+        style={{marginTop: '20px'}}
+        onClick={() => window.open('http://www.sasken.fi/about-us')}
+      > 
+      <InfoText>
+        Learn more 
+      </InfoText> 
+    </Button>
+
+    <Button
+      style={{marginTop: '5px'}}
+      onClick={() => props.setInitialState()}
+    > 
+      <InfoText>
+        Start over 
+      </InfoText> 
+    </Button>
+    </ResultPopup>
+  }
 </React.Fragment>;
 
 const mapStateToProps = (state: State) => ({
-  loading: state.loading
+  loading: state.loading,
+  loadingResult: state.loadingResult,
+  isMatch: state.isMatch,
+  showResult: state.showResult,
 } as SwipePageProps);
 
 const mapDispatchToProps = (dispatch: any) => ({
-
+  getResult: () => {
+    dispatch(getResult());
+  },
+  setInitialState: () => {
+    dispatch(setInitialState());
+  }
 });
 
 export default ReactRedux.connect(mapStateToProps, mapDispatchToProps)(SwipePage);

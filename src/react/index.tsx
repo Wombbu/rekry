@@ -5,6 +5,7 @@ import {State, Skills, Page} from '../redux';
 import SettingsPage from './user-details-page';
 import SwipePage from './swipe-page';
 import c from './common';
+import { FaBattery3 } from 'react-icons/lib/fa';
 
 // Styled-components
 
@@ -48,8 +49,10 @@ const StatusBar = styled.div`
   height: 15px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 0px 10px 0px 10px;
   font-family: 'Helvetica', sans-serif;
+  padding-right: 10px;
 `;
 
 const TinderAppWrapper = styled.div`
@@ -108,9 +111,9 @@ const App = (props: Props) =>
 <AppWrapper>
   <PhoneDisplayWrapper>
     <StatusBar>
-      <c.Font size={10}> &#8226; &#8226; &#8226; &#8226; &#8226; </c.Font>
+      <c.Font size={11}> &#8226; &#8226; &#8226; &#8226; &#8226; </c.Font>
       <c.Font size={10}> Sasken Finland </c.Font>
-      <c.Font size={10}> Rekry </c.Font>
+      <FaBattery3 style={{paddingLeft: '15px'}} size={14} />
     </StatusBar>
     <TinderAppWrapper>
       <Router

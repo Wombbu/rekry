@@ -7,6 +7,9 @@ const actionTypes = {
   changeUserData: 'CHANGE_USER_DATA',
   setPage: 'SET_PAGE',
   setLoading: 'SET_LOADING',
+  setLoadingResult: 'SET_LOADING_RESULT',
+  showResult: 'SHOW_RESULT',
+  setInitialState: 'SET_INITIAL_STATE',
 }
 
 export const changeUserData = (payload: any) => {
@@ -23,6 +26,33 @@ export const setPage = (page: Page) => (dispatch: any, getState: () => State) =>
 
 const setLoading = (loading: boolean) => ({type: actionTypes.setLoading, payload: loading});
 
+const setLoadingResult = (loading: boolean) => ({type: actionTypes.setLoadingResult, payload: loading});
+
+const showResult = (isMatch: boolean) => ({type: actionTypes.showResult, payload: isMatch});
+
+export const setInitialState = () => ({type: actionTypes.setInitialState});
+
+export const getResult = () => (dispatch: any, getState: () => State) => {
+  dispatch(setLoadingResult(true));
+  setTimeout(() => {
+    dispatch(showResult(calculateMatch(getState().skills)));
+  }, 1000);
+} 
+
+const calculateMatch = (skills: Skills) => {
+  const minPoints = 15;
+
+  return Number(skills.brewing) 
+    + Number(skills.decorations)
+    + Number(skills.dunno)
+    + Number(skills.heeh)
+    + Number(skills.privacy)
+    + skills.java
+    + skills.python
+    + skills.js
+    + skills.cpp
+    > minPoints - 16;
+}
 
 // Reducer
 
@@ -48,7 +78,9 @@ export interface State {
   page: Page,
   loading: boolean,
   showResult: boolean,
+  isMatch: boolean,
   skills: Skills,
+  loadingResult: boolean,
 }
 
 const reducer = (state: State, action: AnyAction) => {
@@ -59,6 +91,12 @@ const reducer = (state: State, action: AnyAction) => {
       return {...state, page: action.payload};
     case actionTypes.setLoading:
       return {...state, loading: action.payload};
+    case actionTypes.setLoadingResult:
+      return {...state, loadingResult: action.payload};
+    case actionTypes.showResult:
+      return {...state, showResult: true, isMatch: action.payload};
+    case actionTypes.setInitialState:
+      return initialState;
     default:
       return state;
   }
@@ -66,12 +104,12 @@ const reducer = (state: State, action: AnyAction) => {
 
 // Create redux store
 
-const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
-
-export default createStore(reducer, {
+const initialState = {
   page: Page.SETTINGS,
   showResult: false,
   loading: false,
+  loadingResult: false,
+  isMatch: false,
   skills: {
     java: 0,
     cpp: 0,
@@ -82,4 +120,9 @@ export default createStore(reducer, {
     privacy: false,
     dunno: false,
     heeh: false,
-  }}, composeEnhancers(applyMiddleware(thunk)));
+  }
+};
+
+const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
+
+export default createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunk)));
