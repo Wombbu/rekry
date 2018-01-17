@@ -90,7 +90,7 @@ const AppearingBall = styled.div`
   min-width: ${(p: {size: number}) => p.size}px;
   min-height: ${(p: {size: number}) => p.size}px;
   border-radius: 50%;
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.3);
   background-color: white;
   display: flex;
   justify-content: center;
@@ -128,10 +128,11 @@ const ItsAMatchText = styled.span`
   margin-bottom: 10px;
 `
 const InfoText = styled.span`
-  font-family: 'Helvetica';
-  font-weight: 100;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: lighter;
   color: white;
   font-size: 13px;
+  margin: 2px;
 `;
 
 const Button = styled.div`
@@ -145,6 +146,9 @@ const Button = styled.div`
   cursor: pointer;
   &:hover {
     background-color: rgba(0,0,0,0.3);
+  }
+  &:active {
+    background-color: rgba(0,0,0,0.4);
   }
 `;
 
@@ -174,24 +178,27 @@ export const SwipePage = (props: SwipePageProps) =>
     </CenteringWrapper>}
 
     <BallContainer>
-      <AppearingBall size={40}> <FaTimesCircle size={20} color='rgb(253,62,111)' /> </AppearingBall> 
+      <AppearingBall size={40}> <FaTimesCircle style={{marginTop: '1px', marginRight: '1px'}} size={20} color='rgb(253,62,111)' /> </AppearingBall> 
       <AppearingBall size={30}> <FaRotateLeft color='rgb(255,187,4)' /> </AppearingBall> 
       <AppearingBall size={30}> <FaStar color='rgb(39,181,55)' /> </AppearingBall> 
-      <AppearingBall size={40} onClick={() => props.getResult()}> <FaHeart size={20} color='rgb(66,234,96)' /> </AppearingBall> 
+      <AppearingBall size={40} onClick={() => props.getResult()}> <FaHeart style={{marginTop: '2px'}} size={20} color='rgb(66,214,96)' /> </AppearingBall> 
     </BallContainer>
 </SwipePageWrapper>
   {props.showResult &&
     <ResultPopup>
-      <ItsAMatchText> It's a match! </ItsAMatchText>
-      <InfoText> You and Sasken have liked each other. </InfoText>
-      <InfoText> Ask the people for a job interview! </InfoText>
+      <ItsAMatchText> {props.isMatch ? "It's a match!" : 'No match :('} </ItsAMatchText>
+      <InfoText> {props.isMatch ? 'You and Sasken have liked each other.' : 'Not all hope is lost!'} </InfoText>
+      {!props.isMatch && <InfoText> Convince the Sasken people next to you. </InfoText>}
+      {!props.isMatch && <InfoText> Then ask for a job interview! </InfoText>}
+
+      {props.isMatch && <InfoText> Ask the people for a job interview! </InfoText>}
 
       <Button
         style={{marginTop: '20px'}}
         onClick={() => window.open('http://www.sasken.fi/about-us')}
       > 
       <InfoText>
-        Learn more 
+        Learn more about Sasken
       </InfoText> 
     </Button>
 

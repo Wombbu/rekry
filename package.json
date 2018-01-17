@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "@types/rc-slider": "^8.2.2",
+    "@types/react-icons": "^2.2.4",
     "rc-slider": "^8.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-icons": "^2.2.7",
     "react-redux": "^5.0.6",
     "react-scripts-ts": "2.8.0",
     "react-toggle": "^4.0.2",

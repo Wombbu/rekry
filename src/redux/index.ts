@@ -40,7 +40,7 @@ export const getResult = () => (dispatch: any, getState: () => State) => {
 } 
 
 const calculateMatch = (skills: Skills) => {
-  const minPoints = 15;
+  const minPoints = 8;
 
   return Number(skills.brewing) 
     + Number(skills.decorations)
@@ -48,10 +48,9 @@ const calculateMatch = (skills: Skills) => {
     + Number(skills.heeh)
     + Number(skills.privacy)
     + skills.java
-    + skills.python
     + skills.js
     + skills.cpp
-    > minPoints - 16;
+    > minPoints;
 }
 
 // Reducer
@@ -60,7 +59,6 @@ export interface Skills {
   java: number,
   cpp: number,
   js: number,
-  python: number,
 
   decorations: boolean,
   brewing: boolean,
@@ -114,7 +112,6 @@ const initialState = {
     java: 0,
     cpp: 0,
     js: 0,
-    python: 0,
     decorations: false,
     brewing: false,
     privacy: false,

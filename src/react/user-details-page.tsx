@@ -125,10 +125,6 @@ export const SettingsPage = (props: SettingsPageProps) =>
       title='JavaScript'
       onChange={js => props.changeUserData({js})}
     />
-    <SliderInputGroup
-      title='Python'
-      onChange={python => props.changeUserData({python})}
-    />
     <c.Font style={{paddingLeft: '5px'}} size={15} color={c.darkFont}> Skills </c.Font>
     <SettingsGroup style={{paddingTop: '15px'}}>
       <RadioInput title='Beer brewing' onChange={brewing => props.changeUserData({brewing})} />
