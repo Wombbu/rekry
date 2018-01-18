@@ -38,12 +38,15 @@ const StyledSlider = styled(Slider)`
     width: 18px;
     height: 18px;
     margin-top: -8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
   }
 
   > .rc-slider-track {
-    background-color: ${c.red}
+    background-color: ${c.red};
+    transition: all 0.2s ease;
   }
-
+  cursor: pointer;
   margin: 15px 10px 15px 10px;
   width: 90%;
 `;
