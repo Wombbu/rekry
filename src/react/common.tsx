@@ -30,7 +30,19 @@ export const Font = styled.span`
   ${(p: {size: number, color?: string}) => p.color ? `color: ${p.color};` : ''};
 `;
 
+export const SaskenLogo = styled.div`
+  min-height: 26px;
+  min-width: 22px;
+  background-image: url(./sasken-hex.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  left: 15px;
+`
+
 export default {
+  SaskenLogo,
   darkerRed,
   greyBg,
   red,

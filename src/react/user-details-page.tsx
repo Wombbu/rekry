@@ -53,6 +53,7 @@ const StyledSlider = styled(Slider)`
 
 interface SliderProps {
   title: string;
+  children?: any;
   onChange: (value: number) => void;
 }
 
@@ -64,6 +65,7 @@ const SliderInputGroup = (props: SliderProps) =>
       max={5}
       onChange={props.onChange}
     />
+    {props.children}
   </SettingsGroup>;
 
 interface RadioProps {
@@ -111,15 +113,20 @@ interface SettingsPageProps {
 
 export const SettingsPage = (props: SettingsPageProps) =>
 <React.Fragment>
-  <c.TopBar> 
-    <c.Font size={15} color={c.darkFont}> Personal info </c.Font> 
+  <c.TopBar>
+    <c.SaskenLogo />
+    <c.Font size={15} color={c.darkFont}> Go ahead, start filling! </c.Font> 
   </c.TopBar>
   <SettingPageWrapper> 
     <c.Font style={{paddingLeft: '5px'}} size={15} color={c.darkFont}> Languages </c.Font>
     <SliderInputGroup
       title='Java'
       onChange={(java) => props.changeUserData({java})}
-    />
+    >
+      <div style={{paddingLeft: '8px', paddingRight: '8px'}}>
+        <RadioInput title='Android' onChange={android => props.changeUserData({android})} />
+      </div>
+    </SliderInputGroup>
     <SliderInputGroup
       title='C++'
       onChange={cpp => props.changeUserData({cpp})}
@@ -127,14 +134,17 @@ export const SettingsPage = (props: SettingsPageProps) =>
     <SliderInputGroup
       title='JavaScript'
       onChange={js => props.changeUserData({js})}
-    />
-    <c.Font style={{paddingLeft: '5px'}} size={15} color={c.darkFont}> Skills </c.Font>
+    >
+      <div style={{paddingLeft: '8px', paddingRight: '8px'}}>
+        <RadioInput title='React' onChange={react => props.changeUserData({react})} />
+      </div>
+    </SliderInputGroup>
+    <c.Font style={{paddingLeft: '5px'}} size={15} color={c.darkFont}> Special skills </c.Font>
     <SettingsGroup style={{paddingTop: '15px'}}>
       <RadioInput title='Beer brewing' onChange={brewing => props.changeUserData({brewing})} />
-      <RadioInput title='Christmas decorations' onChange={decorations => props.changeUserData({decorations})} />
-      <RadioInput title='Privacy while working' onChange={privacy => props.changeUserData({privacy})} />
-      <RadioInput title='Dunno lol' onChange={dunno => props.changeUserData({dunno})} />
-      <RadioInput title='Heeh' onChange={heeh => props.changeUserData({heeh})} />
+      <RadioInput title='Lousy sense of humor' onChange={humor => props.changeUserData({humor})} />
+      <RadioInput title='Snooker' onChange={snooker => props.changeUserData({snooker})} />
+      <RadioInput title='Coffee making' onChange={coffee => props.changeUserData({coffee})} />
     </SettingsGroup>
     <SubmitButton
       onClick={() => props.setPage()}

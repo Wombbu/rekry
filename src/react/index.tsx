@@ -65,28 +65,17 @@ const TinderAppWrapper = styled.div`
     flex: 1;
 `;
 
-/*const rotationAnimation = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const AnimationIndicator = styled.span`
+const SaskenLogo = styled.div`
+  min-height: 51px;
+  min-width: 124px;
+  background-image: url(./sasken-logo-big.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   position: absolute;
-  margin: auto;
-  background-color: palevioletred;
-  animation: ${rotationAnimation} 2s linear infinite;
-  width: 40px;
-  height: 40px;
-  top:0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;*/
+  bottom: 20px;
+  right: 20px;
+`;
 
 // React-component
 
@@ -123,6 +112,7 @@ const App = (props: Props) =>
       />
     </TinderAppWrapper>
   </PhoneDisplayWrapper>
+  <SaskenLogo />
 </AppWrapper>;
 
 // Redux-bindings of the created component + export

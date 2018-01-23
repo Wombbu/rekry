@@ -42,11 +42,13 @@ export const getResult = () => (dispatch: any, getState: () => State) => {
 const calculateMatch = (skills: Skills) => {
   const minPoints = 8;
 
-  return Number(skills.brewing) 
-    + Number(skills.decorations)
-    + Number(skills.dunno)
-    + Number(skills.heeh)
-    + Number(skills.privacy)
+  return Number(skills.react) 
+    + Number(skills.android)
+    + Number(skills.brewing)
+    + Number(skills.coffee)
+    + Number(skills.snooker)
+    + Number(skills.humor)
+
     + skills.java
     + skills.js
     + skills.cpp
@@ -57,14 +59,15 @@ const calculateMatch = (skills: Skills) => {
 
 export interface Skills {
   java: number,
+  android: boolean,
   cpp: number,
   js: number,
+  react: boolean,
 
-  decorations: boolean,
   brewing: boolean,
-  privacy: boolean,
-  dunno: boolean,
-  heeh: boolean,
+  humor: boolean,
+  coffee: boolean,
+  snooker: boolean,
 }
 
 export enum Page {
@@ -110,13 +113,14 @@ const initialState = {
   isMatch: false,
   skills: {
     java: 0,
+    android: false,
     cpp: 0,
     js: 0,
-    decorations: false,
+    react: false,
     brewing: false,
-    privacy: false,
-    dunno: false,
-    heeh: false,
+    humor: false,
+    coffee: false,
+    snooker: false,
   }
 };
 

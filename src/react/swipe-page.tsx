@@ -152,13 +152,24 @@ const Button = styled.div`
   }
 `;
 
+const SaskenLogo = styled.div`
+  min-height: 58px;
+  min-width: 142px;
+  background-image: url(./sasken-white-big.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  align-self: center;
+`;
+
 export const SwipePage = (props: SwipePageProps) =>
 <React.Fragment>
 <SwipePageWrapper
   resultShown={props.showResult}
 >
-  <c.TopBar> 
-    <c.Font size={15} color={c.darkFont}> Swipe away </c.Font> 
+  <c.TopBar>
+    <c.SaskenLogo />
+    <c.Font size={15} color={c.darkFont}> Swipe! </c.Font> 
   </c.TopBar>
   {props.loading && <CenteringWrapper> <div className="load"/> </CenteringWrapper>}
   {!props.loading && 
@@ -168,7 +179,7 @@ export const SwipePage = (props: SwipePageProps) =>
       <AppearingCard
         present={!props.loadingResult}
       >
-        <img src='./sasken-logo-white.png' style={{width: '142px', height: '58px', alignSelf: 'center'}} />
+        <SaskenLogo />
         <BottomInfo> 
           <c.Font color='white' size={15}> Sasken, 28 </c.Font>
           <c.Font color='white' size={10}> Damn good place to work </c.Font>
