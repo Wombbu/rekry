@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import * as ReactRedux from 'react-redux';
 import * as React from 'react';
 import Slider from 'rc-slider';
-import {State, changeUserData, Page, setPage} from '../redux';
+import {State, changeUserData, changeUserContactInfo, Page, setPage} from '../redux';
 import 'rc-slider/assets/index.css';
 import './react-toggle.css';
 import Toggle from 'react-toggle'
@@ -80,6 +80,21 @@ const RadioWrapper = styled.div`
   margin-bottom: 15px;
 `;
 
+const TextInput = styled.input`
+  width: 96%;
+  height: 20px;
+  border: 0px;
+  border-bottom: 2px solid rgba(0,0,0,0.1);
+  padding-left: 3px;
+  padding-bottom: 3px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: rgba(0,0,0,0.7);
+  &::placeholder {
+    color: rgba(0,0,0,0.3);
+  }
+`;
+
 const RadioInput = (props: RadioProps) =>
   <RadioWrapper>
     <c.Font size={13} color={c.red}> {props.title} </c.Font>
@@ -109,6 +124,7 @@ const SubmitButton = SettingsGroup.extend`
 interface SettingsPageProps {
   changeUserData: (override: any) => void;
   setPage: () => void;
+  changeUserContactInfo: (override: any) => void;
 }
 
 export const SettingsPage = (props: SettingsPageProps) =>
@@ -118,12 +134,18 @@ export const SettingsPage = (props: SettingsPageProps) =>
     <c.Font size={15} color={c.darkFont}> Go ahead, start filling! </c.Font> 
   </c.TopBar>
   <SettingPageWrapper> 
+    <c.Font style={{paddingLeft: '5px'}} size={15} color={c.darkFont}> Personal info </c.Font>
+    <SettingsGroup>
+      <TextInput type='text' placeholder='Name' onInput={(event: any) => props.changeUserContactInfo({name: event.target.value})}/>
+      <TextInput type='text' placeholder='Email' onInput={(event: any) => props.changeUserContactInfo({email: event.target.value})}/>
+    </SettingsGroup>
+
     <c.Font style={{paddingLeft: '5px'}} size={15} color={c.darkFont}> Languages </c.Font>
     <SliderInputGroup
       title='Java'
       onChange={(java) => props.changeUserData({java})}
     >
-      <div style={{paddingLeft: '8px', paddingRight: '8px'}}>
+      <div style={{paddingLeft: '6px', paddingRight: '12px'}}>
         <RadioInput title='Android' onChange={android => props.changeUserData({android})} />
       </div>
     </SliderInputGroup>
@@ -135,7 +157,7 @@ export const SettingsPage = (props: SettingsPageProps) =>
       title='JavaScript'
       onChange={js => props.changeUserData({js})}
     >
-      <div style={{paddingLeft: '8px', paddingRight: '8px'}}>
+      <div style={{paddingLeft: '6px', paddingRight: '12px'}}>
         <RadioInput title='React' onChange={react => props.changeUserData({react})} />
       </div>
     </SliderInputGroup>
@@ -163,6 +185,9 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   changeUserData: (override: any) => {
     dispatch(changeUserData(override));
+  },
+  changeUserContactInfo: (override: any) => {
+    dispatch(changeUserContactInfo(override));
   },
   setPage: () => {
     dispatch(setPage(Page.SWIPE));

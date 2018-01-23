@@ -53,6 +53,7 @@ const StatusBar = styled.div`
   padding: 0px 10px 0px 10px;
   font-family: 'Helvetica', sans-serif;
   padding-right: 10px;
+  color: rgba(0,0,0,0.7);
 `;
 
 const TinderAppWrapper = styled.div`
@@ -101,7 +102,7 @@ const App = (props: Props) =>
   <PhoneDisplayWrapper>
     <StatusBar>
       <c.Font size={11}> &#8226; &#8226; &#8226; &#8226; &#8226; </c.Font>
-      <c.Font size={10}> Sasken Finland </c.Font>
+      <c.Font size={10}> <span style={{color: 'rgba(0,0,0,0.5)'}}> Sasken Finland </span> </c.Font>
       <FaBattery3 style={{paddingLeft: '15px'}} size={14} />
     </StatusBar>
     <TinderAppWrapper>

@@ -10,17 +10,29 @@ const actionTypes = {
   setLoadingResult: 'SET_LOADING_RESULT',
   showResult: 'SHOW_RESULT',
   setInitialState: 'SET_INITIAL_STATE',
+  changeContactInfo: 'CHANGE_CONTACT_INFO',
 }
 
-export const changeUserData = (payload: any) => {
-  return {type: actionTypes.changeUserData, payload};
-}
+export const changeUserData = (payload: any) => ({type: actionTypes.changeUserData, payload});
+
+export const changeUserContactInfo = (payload: any) => ({type: actionTypes.changeContactInfo, payload});
 
 export const setPage = (page: Page) => (dispatch: any, getState: () => State) => {
+  fetch('localhost:3001/add', {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify({contactInfo: getState().personalData, skills: getState().skills}), 
+      headers: new Headers({'Content-Type': 'application/json'})
+    }
+  )
+    .then(() => console.log('user data saved'))
+    .catch(error => console.log('user data save failed', error));
+
   dispatch(setLoading(true));
+
   setTimeout(() => {
     dispatch(setLoading(false));
   }, 2000);
+  
   dispatch({type: actionTypes.setPage, payload: page});
 } 
 
@@ -70,12 +82,18 @@ export interface Skills {
   snooker: boolean,
 }
 
+export interface PersonalData {
+  name: string,
+  email: string,
+}
+
 export enum Page {
   SETTINGS,
   SWIPE,
 }
 
 export interface State {
+  personalData: PersonalData,
   page: Page,
   loading: boolean,
   showResult: boolean,
@@ -96,6 +114,8 @@ const reducer = (state: State, action: AnyAction) => {
       return {...state, loadingResult: action.payload};
     case actionTypes.showResult:
       return {...state, showResult: true, isMatch: action.payload};
+    case actionTypes.changeContactInfo:
+      return {...state, personalData: {...state.personalData, ...action.payload}};
     case actionTypes.setInitialState:
       return initialState;
     default:
@@ -106,6 +126,10 @@ const reducer = (state: State, action: AnyAction) => {
 // Create redux store
 
 const initialState = {
+  personalData: {
+    name: '',
+    email: '',
+  },
   page: Page.SETTINGS,
   showResult: false,
   loading: false,
