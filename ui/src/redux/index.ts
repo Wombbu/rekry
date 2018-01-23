@@ -18,12 +18,13 @@ export const changeUserData = (payload: any) => ({type: actionTypes.changeUserDa
 export const changeUserContactInfo = (payload: any) => ({type: actionTypes.changeContactInfo, payload});
 
 export const setPage = (page: Page) => (dispatch: any, getState: () => State) => {
-  fetch('localhost:3001/add', {
-      method: 'POST', // or 'PUT'
-      body: JSON.stringify({contactInfo: getState().personalData, skills: getState().skills}), 
-      headers: new Headers({'Content-Type': 'application/json'})
-    }
-  )
+  console.log(JSON.stringify({contactInfo: getState().personalData, skills: getState().skills}));
+
+  fetch('http://localhost:3004/add/', {
+      method: 'POST',
+      body: JSON.stringify({contactInfo: getState().personalData, skills: getState().skills}),
+      headers: {'Content-Type': 'application/json'}
+    })
     .then(() => console.log('user data saved'))
     .catch(error => console.log('user data save failed', error));
 
